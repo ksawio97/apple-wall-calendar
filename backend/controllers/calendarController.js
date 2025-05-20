@@ -1,6 +1,10 @@
 const calendarService = require('../services/calendarService');
 
-exports.updateCalendarData = async (req, res) => {
+exports.getEvents = async (req, res) => {
     const completeText = await calendarService.getCalendarData(process.env.CALENDAR_LINK);
-    res.send(completeText);
+    const calendarComponent = calendarService.parseIcalData(completeText);
+
+    const events = calendarService.getCalendarEvents(calendarComponent);
+
+    res.send(events);
 }

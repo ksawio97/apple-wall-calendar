@@ -1,3 +1,5 @@
+const ICAL = require("ical.js");
+const EventModel = require('../models/EventModel');
 /**
  * 
  * @param {string} link 
@@ -12,4 +14,24 @@ module.exports.getCalendarData = async (link) => {
       completeText += chunk;
     }
     return completeText;
+}
+
+module.exports.parseIcalData = (content) => {
+  const jcalData = new ICAL.parse(content);
+  const comp = new ICAL.Component(jcalData);
+  return comp;
+}
+
+module.exports.getCalendarEvents = (comp) => {
+  const events = comp.jCal[2].filter(item => item[0] === 'vevent');
+
+  return events.map(data => {
+    const event = data[1];
+
+    const uid = event[4][3];
+    const summary = event[1][3];
+    const start = event[6][3];
+    const end = event[7][3];
+    return new EventModel(uid, summary, start, end);
+  });
 }

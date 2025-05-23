@@ -15,7 +15,7 @@ export default function EventsGroup({ events }: { events: EventModel[] }) {
     }, [events, index]);
 
     return (
-        <div className="p-4">
+        <div>
             <div className="flex flex-row h-1 gap-2 bg-gray-200 px-1">
                 {events.map((event, i) => {
                     return (

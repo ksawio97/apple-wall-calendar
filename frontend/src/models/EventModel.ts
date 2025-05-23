@@ -3,11 +3,11 @@ export default class EventModel {
     summary: string;
     start: Date;
     end: Date;
-    constructor(uid: string, summary: string, start: string, end: string) {
+    constructor(uid: string, summary: string, start: Date, end: Date) {
         this.uid = uid;
         this.summary = summary;
-        this.start = new Date(start);
-        this.end = new Date(end);
+        this.start = start;
+        this.end = end;
     }
 
     display() {

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import EventModel from "../../models/EventModel";
 import EventBox from "./EventBox";
 
-export default function EventsGroup({ events }: { events: EventModel[] }) {
+export default function EventsGroup({ groupKey, events }: { groupKey: string, events: EventModel[] }) {
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
@@ -19,7 +19,7 @@ export default function EventsGroup({ events }: { events: EventModel[] }) {
             <div className="flex flex-row h-1 gap-2 bg-gray-200 px-1">
                 {events.map((event, i) => {
                     return (
-                        <ItemIndicatorCarousel key={`${event.uid}-carousel`} highlight={index === i}/>
+                        <ItemIndicatorCarousel key={`${groupKey}-${event.uid}-carousel`} highlight={index === i}/>
                     )
                 })}
 

@@ -7,7 +7,7 @@ export default function DayBox({ dayModel }: { dayModel: DayModel }){
             <div className="bg-red-600 w-full items-center">
                 <p className="text-white text-center font-bold">{dayModel.day.toLocaleString('en', { month: 'short'})}</p>
             </div>
-            <h3 className="p-8 text-4xl">{dayModel.day.getDay()}</h3>
+            <h3 className="p-8 text-4xl">{dayModel.day.getDate()}</h3>
             <EventsGroup events={dayModel.events}></EventsGroup>
         </div>
     );

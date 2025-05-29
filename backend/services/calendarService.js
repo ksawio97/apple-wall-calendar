@@ -26,12 +26,12 @@ module.exports.getCalendarEvents = (comp) => {
   const events = comp.jCal[2].filter(item => item[0] === 'vevent');
 
   return events.map(data => {
-    const event = data[1];
+    const convData = new Map(data[1].map((property) => [property[0], property[3]]));
 
-    const uid = event[4][3];
-    const summary = event[1][3];
-    const start = event[6][3];
-    const end = event[7][3];
+    const uid = convData.get('uid');
+    const summary = convData.get('summary');
+    const start = Date.parse(convData.get('dtstart'));
+    const end = Date.parse(convData.get('dtend'));
     return new EventModel(uid, summary, start, end);
   });
 }

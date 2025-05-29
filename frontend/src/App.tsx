@@ -1,45 +1,24 @@
 import { useEffect, useState } from "react";
-import EventModel from "./models/EventModel";
 import WeekBox from "./components/Days/WeekBox";
 import DayModel from "./models/DayModel";
+import getWeekDays from "./utils/getWeekDays";
+import { fetchEvents } from "./services/calendarEventsService";
+import assignEventsToDays from "./helpers/assignEventsToDays";
 
 function App() {
   const [days, setDays] = useState<DayModel[]>([]);
 
-  useEffect(() => {
-    // sample
-    const event1 = new EventModel(
-        "evt_001",
-        "Team Meeting",
-        new Date(2025, 0, 1, 9),
-        new Date(2025, 0, 1, 10)
-    );
-
-    const event2 = new EventModel(
-        "evt_002",
-        "Lunch Break",
-        new Date(2025, 0, 1, 12),
-        new Date(2025, 0, 1, 13)
-    );
-
-    const day1 = new DayModel(
-        new Date(2025, 0, 1),
-        [event1, event2]
-    );
-
-    const event3 = new EventModel(
-        "evt_003",
-        "Project Review",
-        new Date(2025, 0, 2, 14),
-        new Date(2025, 0, 2, 16)
-    );
-
-    const day2 = new DayModel(
-        new Date(2025, 0, 2),
-        [event3]
-    );
-
-    setDays([day1, day2]);
+  useEffect(() => { 
+    fetchEvents()
+      .then((events) => {
+          const weekDays  = getWeekDays(new Date()).map((day) => new DayModel(day, []));
+          assignEventsToDays(weekDays, events);
+          return weekDays
+      })
+      .then((weekDays) => {
+        setDays(weekDays);
+      })
+    // set week days
   }, []);
   
   return (

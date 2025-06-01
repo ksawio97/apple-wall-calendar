@@ -15,8 +15,8 @@ export default class EventModel {
   getFullDaysRange(): { startOfDay: Date; endOfDay: Date } {
     const startOfDay = new Date(this.start);
     startOfDay.setHours(0, 0, 0, 0);
-
-    const endOfDay = new Date(this.end);
+    // -1 bcs if event end is on days 00:00:00 time it means we shouldn't include this day
+    const endOfDay = new Date(this.end.getTime() - 1);
     endOfDay.setHours(23, 59, 59, 999);
 
     return { startOfDay, endOfDay };

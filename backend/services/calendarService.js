@@ -21,6 +21,10 @@ module.exports.parseIcalData = (content) => {
   const comp = new ICAL.Component(jcalData);
   return comp;
 }
+// fixes bug where date is not sent with Time and time is set to time zone offset instead of 00:00:00
+function parseDate(s) {
+  return Date.parse(s + (s.includes('T') ? '' : 'T00:00:00'));
+}
 
 module.exports.getCalendarEvents = (comp) => {
   const events = comp.jCal[2].filter(item => item[0] === 'vevent');
@@ -30,8 +34,10 @@ module.exports.getCalendarEvents = (comp) => {
 
     const uid = convData.get('uid');
     const summary = convData.get('summary');
-    const start = Date.parse(convData.get('dtstart'));
-    const end = Date.parse(convData.get('dtend'));
+
+    const start = parseDate(convData.get('dtstart'));
+    const end = parseDate(convData.get('dtend'));
+
     return new EventModel(uid, summary, start, end);
   });
 }

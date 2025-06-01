@@ -12,13 +12,6 @@ export default class EventModel {
         this.end = end;
     }
 
-    display() {
-        console.log(`Event UID: ${this.uid}`);
-        console.log(`Summary: ${this.summary}`);
-        console.log(`Start: ${this.start}`);
-        console.log(`End: ${this.end}`);
-    }
-
   getFullDaysRange(): { startOfDay: Date; endOfDay: Date } {
     const startOfDay = new Date(this.start);
     startOfDay.setHours(0, 0, 0, 0);

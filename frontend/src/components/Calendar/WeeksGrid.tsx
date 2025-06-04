@@ -11,7 +11,8 @@ export default function WeeksGrid({ currDay, weeksBefore, weeksAfter }: { currDa
 
     // fetch events for days
     useEffect(() => {
-        fetchEvents()
+        const [from, to] = getTimeFrame(weeksBefore, weeksAfter);
+        fetchEvents(from, to)
             .then((events) => {
                 let weekDays = getWeeksDays(currDay, weeksBefore, weeksAfter);
                 const daysModels = weekDays.map((d) => new DayModel(d, []));
@@ -28,4 +29,15 @@ export default function WeeksGrid({ currDay, weeksBefore, weeksAfter }: { currDa
             {days.map((day) => (<DayBox key={day.day.toString()} dayModel={day} marked={isOnTheSameDate(day.day, currDay)}></DayBox>))}
         </div>
     );
+}
+
+
+function getTimeFrame(weeksBefore: number, weeksAfter: number) {
+    const now = new Date();
+    return [
+        // first week monday time
+        now.getTime() - weeksBefore * 7 * 24 * 60 * 60 * 1000 - (now.getDay() === 0 ? 6 : now.getDay() - 1) * 24 * 60 * 60 * 1000,
+        // last week sunday time
+        now.getTime() + weeksAfter * 7 * 24 * 60 * 60 * 1000 + (6 - (now.getDay() === 0 ? 6 : now.getDay() - 1)) * 24 * 60 * 60 * 1000
+    ].map(ms => new Date(ms));
 }

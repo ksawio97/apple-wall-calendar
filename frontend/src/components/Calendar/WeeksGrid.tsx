@@ -6,6 +6,7 @@ import { fetchEvents } from "../../services/calendarEventsService";
 import assignEventsToDays from "../../helpers/assignEventsToDays";
 import isOnTheSameDate from "../../utils/isOnTheSameDate";
 import EventGroupsService from "../../services/EventGroupsService";
+import EventsGroupGridWrap from "../Events/EventsGroupGridWrap";
 
 export default function WeeksGrid({ currDay, weeksBefore, weeksAfter }: { currDay: Date, weeksBefore: number, weeksAfter: number }) {
     const [days, setDays] = useState<DayModel[]>([]);
@@ -41,17 +42,29 @@ export default function WeeksGrid({ currDay, weeksBefore, weeksAfter }: { currDa
         };
     }, [layer]);
 
-    useEffect(() => {
-        console.log(days);
-    }, [layer]);
     return (
-        <div className="grid grid-cols-7">
-            {days.map((day) => (<DayBox key={day.day.toString()} dayModel={day} marked={isOnTheSameDate(day.day, currDay)} activeGroupEvents={eventGroupService.getActiveEvents(day.groupId ?? "", layer)}></DayBox>))}
+        <div>
+            {splitIntoSevens(days).map((week) => 
+                weeksGrid(week, currDay, eventGroupService, layer)
+            )}
         </div>
     );
 }
 
+function weeksGrid(week: DayModel[], currDay: Date, eventGroupService: EventGroupsService, layer: number) {
+    return (
+        <div className="grid grid-rows-[10em_6em] grid-cols-[repeat(7,_200px)]">
+            {week.map((day, i) => {
+                const marked = isOnTheSameDate(day.day, currDay);
 
+                return (<>
+                        <DayBox key={day.day.toString()} dayModel={day} marked={marked}></DayBox>
+                        <EventsGroupGridWrap groupKey={day.toString()} dayModel={day} activeGroupEvents={eventGroupService.getActiveEvents(day.groupId ?? "", layer)} marked={marked}></EventsGroupGridWrap>
+                </>)
+            })}
+        </div>
+    );
+}
 function getTimeFrame(weeksBefore: number, weeksAfter: number) {
     const now = new Date();
     return [
@@ -60,4 +73,12 @@ function getTimeFrame(weeksBefore: number, weeksAfter: number) {
         // last week sunday time
         now.getTime() + weeksAfter * 7 * 24 * 60 * 60 * 1000 + (6 - (now.getDay() === 0 ? 6 : now.getDay() - 1)) * 24 * 60 * 60 * 1000
     ].map(ms => new Date(ms));
+}
+
+function splitIntoSevens(arr: DayModel[]) {
+    const result = [];
+    for (let i = 0; i < arr.length; i += 7) {
+        result.push(arr.slice(i, i + 7));
+    }
+    return result;
 }

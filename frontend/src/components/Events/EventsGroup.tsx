@@ -1,18 +1,25 @@
-import EventModel from "../../models/EventModel";
 import EventBox from "./EventBox";
+import DayModel from "../../models/DayModel";
 
-export default function EventsGroup({ groupKey, events, activeIndex }: { groupKey: string, events: EventModel[], activeIndex: number }) {
+type EventsGroupProps = {
+    groupKey: string,
+    dayModel: DayModel,
+    activeIndex: number
+}
+export default function EventsGroup({ groupKey, dayModel, activeIndex }: EventsGroupProps) {
     return (
-        <div>
-            <div className="flex flex-row h-1 gap-2 bg-gray-200 px-1">
-                {events.map((event, i) => {
-                    return (
-                        <ItemIndicatorCarousel key={`${groupKey}-${event.uid}-carousel`} highlight={activeIndex === i}/>
-                    )
-                })}
+        <div className="w-full h-full">
+            {   dayModel.events.length > 0 &&
+                <div className="flex flex-row h-1 gap-2 bg-gray-200 px-1">
+                    {dayModel.events.map((event, i) => {
+                        return (
+                            <ItemIndicatorCarousel key={`${groupKey}-${event.uid}-carousel`} highlight={activeIndex === i}/>
+                        )
+                    })}
 
-            </div>
-            {activeIndex !== -1 && events[activeIndex] && <EventBox event={events[activeIndex]}></EventBox>}
+                </div>
+            }
+            {activeIndex !== -1 && <EventBox event={dayModel.events[activeIndex]}></EventBox>}
         </div>
     );
 }

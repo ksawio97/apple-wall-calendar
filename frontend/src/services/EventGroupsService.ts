@@ -37,7 +37,7 @@ export default class EventGroupsService {
 
     getGroupInfoById(groupId: string) {
         const groupIndex = this.groupIndexById.has(groupId) ? this.groupIndexById.get(groupId) : undefined;
-        return groupIndex && groupIndex < this.groups.length ? this.groups[groupIndex] : undefined;
+        return groupIndex !== undefined && groupIndex < this.groups.length ? this.groups[groupIndex] : undefined;
     }
 
     getActiveEvents(groupId: string, layerIndex: number): Set<string> {

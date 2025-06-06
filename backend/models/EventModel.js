@@ -5,13 +5,6 @@ class EventModel {
         this.start = start;
         this.end = end;
     }
-
-    display() {
-        console.log(`Event UID: ${this.uid}`);
-        console.log(`Summary: ${this.summary}`);
-        console.log(`Start: ${this.start}`);
-        console.log(`End: ${this.end}`);
-    }
 }
 
 module.exports = EventModel;

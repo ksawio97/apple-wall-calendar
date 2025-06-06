@@ -6,10 +6,11 @@ function getTimeText(time: Date) {
 
 export default function EventBox({ event }: { event: EventModel }) {
     return (
-        <div className="w-40">
-            <div className="flex flex-col bg-gray-200 p-2">
-                <h3>{event.summary}</h3>
-                <p className="no-wrap text-center">{getTimeText(event.start)} - {getTimeText(event.end)}</p>
+        <div className="w-full h-full">
+            <div className="flex flex-col bg-gray-200 p-2 h-full overflow-hidden">
+                <h3 className="whitespace-nowrap">{event.summary}</h3>
+                {!event.isAllDay() &&
+                <p className="no-wrap text-center">{getTimeText(event.start)} - {getTimeText(event.end)}</p> }
             </div>
         </div>
     );

@@ -5,6 +5,7 @@ export default class EventModel {
     summary: string;
     start: Date;
     end: Date;
+
     constructor(uid: string, summary: string, start: Date, end: Date) {
         this.uid = uid;
         this.summary = summary;
@@ -20,5 +21,23 @@ export default class EventModel {
     endOfDay.setHours(23, 59, 59, 999);
 
     return { startOfDay, endOfDay };
+  }
+
+  isFirstDayOfEvent(day: Date) {
+      const { startOfDay } = this.getFullDaysRange();
+      return startOfDay.getTime() <= day.getTime() && day.getTime() <= (startOfDay.getTime() + 1000 * 60 * 60 * 24);
+  }
+
+  isAllDay() {
+    const {startOfDay, endOfDay} = this.getFullDaysRange();
+  
+    return this.start.getTime() === startOfDay.getTime() && this.end.getTime() - 1 === endOfDay.getTime();
+  }
+
+  daysSpan() {
+    const {startOfDay, endOfDay} = this.getFullDaysRange();
+
+    const msPerDay = 1000 * 60 * 60 * 24;
+    return Math.floor((endOfDay.getTime() - startOfDay.getTime()) / msPerDay) + 1;
   }
 }

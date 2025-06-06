@@ -1,30 +1,18 @@
-import { useEffect, useState } from "react";
 import EventModel from "../../models/EventModel";
 import EventBox from "./EventBox";
 
-export default function EventsGroup({ groupKey, events }: { groupKey: string, events: EventModel[] }) {
-    const [index, setIndex] = useState(0);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setIndex((index + 1) % events.length);
-        }, 4000);
-        return () => {
-            clearInterval(interval);
-        };
-    }, [events, index]);
-
+export default function EventsGroup({ groupKey, events, activeIndex }: { groupKey: string, events: EventModel[], activeIndex: number }) {
     return (
         <div>
             <div className="flex flex-row h-1 gap-2 bg-gray-200 px-1">
                 {events.map((event, i) => {
                     return (
-                        <ItemIndicatorCarousel key={`${groupKey}-${event.uid}-carousel`} highlight={index === i}/>
+                        <ItemIndicatorCarousel key={`${groupKey}-${event.uid}-carousel`} highlight={activeIndex === i}/>
                     )
                 })}
 
             </div>
-            {events[0] && <EventBox event={events[index]}></EventBox>}
+            {activeIndex !== -1 && events[activeIndex] && <EventBox event={events[activeIndex]}></EventBox>}
         </div>
     );
 }

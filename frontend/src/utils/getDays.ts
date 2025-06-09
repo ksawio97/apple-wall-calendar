@@ -2,8 +2,7 @@ const DAY_MS = 1000*60*60*24;
 
 export function getWeekDays(day: Date) {
     const coreDay = new Date(day);
-    coreDay.setUTCHours(0, 0, 0, 0);
-
+    coreDay.setHours(0, 0, 0, 0);
     const currDayIndex = day.getDay() === 0 ? 7 : day.getDay();
 
     const days = [];

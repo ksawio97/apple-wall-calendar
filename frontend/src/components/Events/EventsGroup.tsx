@@ -4,11 +4,12 @@ import DayModel from "../../models/DayModel";
 type EventsGroupProps = {
     groupKey: string,
     dayModel: DayModel,
-    activeIndex: number
+    activeIndex: number,
+    noText: boolean
 }
-export default function EventsGroup({ groupKey, dayModel, activeIndex }: EventsGroupProps) {
+export default function EventsGroup({ groupKey, dayModel, activeIndex, noText }: EventsGroupProps) {
     return (
-        <div className="w-full h-full">
+        <div className="w-full h-full px-2">
             {   dayModel.events.length > 0 &&
                 <div className="flex flex-row h-1 gap-2 bg-gray-200 px-1">
                     {dayModel.events.map((event, i) => {
@@ -19,7 +20,7 @@ export default function EventsGroup({ groupKey, dayModel, activeIndex }: EventsG
 
                 </div>
             }
-            {activeIndex !== -1 && <EventBox event={dayModel.events[activeIndex]}></EventBox>}
+            {activeIndex !== -1 && <EventBox event={dayModel.events[activeIndex]} noText={noText}></EventBox>}
         </div>
     );
 }

@@ -23,7 +23,6 @@ export default function WeeksGrid({ currDay, weeksBefore, weeksAfter }: { currDa
                 assignEventsToDays(daysModels, events);
                 
                 setEventGroupService(groupService);
-                
                 return daysModels
             })
             .then((weekDays) => {
@@ -33,6 +32,7 @@ export default function WeeksGrid({ currDay, weeksBefore, weeksAfter }: { currDa
     
     const [layer, setLayer] = useState(0);
 
+    // every 4 s change events shown
     useEffect(() => {
         const interval = setInterval(() => {
             setLayer((layer + 1) % Number.MAX_VALUE);

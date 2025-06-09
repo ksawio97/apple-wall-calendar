@@ -19,24 +19,30 @@ export default function EventsGroupGridWrap({ groupKey, dayModel, activeGroupEve
 
         setActiveIndex(index);
     }, [activeGroupEvents, dayModel]);
-
-    const eventStartDay = useMemo(() => {
+    // event start to show event title, event continuation shows event box that starts weeks above
+    const [eventStartDay, eventContinuation] = useMemo(() => {
         if (activeIndex === -1)
-            return false;
-        // active event start or monday
-        return dayModel.events[activeIndex].isFirstDayOfEvent(dayModel.day) || dayModel.day.getDay() === 1;
+            return [false, false];
+        const isEventStart = dayModel.events[activeIndex].isFirstDayOfEvent(dayModel.day);
+        const isMonday = dayModel.day.getDay() === 1;
+        // active event start or monday, 
+        return [isEventStart || isMonday, !isEventStart && isMonday];
     }, [dayModel, activeIndex]);
 
     const colSpan = useMemo(() => {
         if (!eventStartDay)
-            return 1;
-        return dayModel.events[activeIndex].daysSpan();
+            return 0;
+        const weekDay = dayModel.day.getDay() === 0 ? 7 : dayModel.day.getDay();
+        const { startOfDay } = dayModel.events[activeIndex].getFullDaysRange();
+        // ensures that when its monday and not event start it has correct span
+        const startToDayDiff = (dayModel.day.getTime() - startOfDay.getTime()) / (1000 * 60 * 60 * 24);
+        return Math.min(dayModel.events[activeIndex].daysSpan() - startToDayDiff, (8 - weekDay));
     }, [eventStartDay, dayModel, activeIndex]);
 
     return (
         <>
-            { (activeIndex === -1 || eventStartDay) &&<div className={`row-start-2 row-end-3 h-full w-full overflow-hidden ${marked ? 'bg-slate-200' : ''} ${eventStartDay  ? `col-span-${colSpan % 8}` : ''}`}>
-                {eventStartDay && <EventsGroup groupKey={groupKey} dayModel={dayModel} activeIndex={activeIndex}></EventsGroup>}
+            { (activeIndex === -1 || eventStartDay) &&<div className={`row-start-2 row-end-3 h-full w-full overflow-hidden ${marked ? 'bg-slate-200' : ''}`} style={{ gridColumn: `span ${colSpan}`}}>
+                {eventStartDay && <EventsGroup groupKey={groupKey} dayModel={dayModel} activeIndex={activeIndex} noText={eventContinuation}></EventsGroup>}
             </div> }
         </>
     )

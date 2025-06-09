@@ -25,7 +25,8 @@ export default class EventModel {
 
   isFirstDayOfEvent(day: Date) {
       const { startOfDay } = this.getFullDaysRange();
-      return startOfDay.getTime() <= day.getTime() && day.getTime() <= (startOfDay.getTime() + 1000 * 60 * 60 * 24);
+
+      return startOfDay.getTime() <= day.getTime() && day.getTime() < (startOfDay.getTime() + 1000 * 60 * 60 * 24);
   }
 
   isAllDay() {

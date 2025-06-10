@@ -53,7 +53,7 @@ export default function WeeksGrid({ currDay, weeksBefore, weeksAfter }: { currDa
 
 function weeksGrid(week: DayModel[], currDay: Date, eventGroupService: EventGroupsService, layer: number) {
     return (
-        <div className="grid grid-rows-[10em_6em] grid-cols-[repeat(7,_200px)]">
+        <div className="grid grid-rows-[10em_5px_6em] grid-cols-[repeat(7,_200px)]">
             {week.map((day, i) => {
                 const marked = isOnTheSameDate(day.day, currDay);
 

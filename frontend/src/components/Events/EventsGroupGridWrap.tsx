@@ -41,9 +41,7 @@ export default function EventsGroupGridWrap({ groupKey, dayModel, activeGroupEve
 
     return (
         <>
-            { (activeIndex === -1 || eventStartDay) &&<div className={`row-start-2 row-end-3 h-full w-full overflow-hidden ${marked ? 'bg-slate-200' : ''}`} style={{ gridColumn: `span ${colSpan}`}}>
-                {eventStartDay && <EventsGroup groupKey={groupKey} dayModel={dayModel} activeIndex={activeIndex} noText={eventContinuation}></EventsGroup>}
-            </div> }
+        <EventsGroup groupKey={groupKey} dayModel={dayModel} activeIndex={activeIndex} noText={eventContinuation} marked={marked} colSpan={colSpan} showEvent={eventStartDay}></EventsGroup>
         </>
     )
 }

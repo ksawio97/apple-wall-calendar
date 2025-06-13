@@ -45,4 +45,10 @@ export default class EventGroupsService {
         if (!group) return new Set();
         return new Set((group.eventLayers[layerIndex % group.eventLayers.length] ?? []).map(e => e.uid));
     }
+
+    getGroupLayer(groupId: string, layerIndex: number) {
+        const group = this.getGroupInfoById(groupId);
+        if (!group) return -1;
+        return layerIndex % group.eventLayers.length;
+    }
 }

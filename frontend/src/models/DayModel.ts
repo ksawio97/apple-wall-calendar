@@ -10,4 +10,8 @@ export default class DayModel {
         this.events = events;
         this.groupId = groupId;
     }
+
+    getEventsCountDayStart() {
+        return this.events.filter((e) => e.isFirstDayOfEvent(this.day)).length;
+    }
 }

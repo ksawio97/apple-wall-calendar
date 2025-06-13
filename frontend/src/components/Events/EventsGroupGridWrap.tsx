@@ -6,10 +6,11 @@ type EventsGroupGridWrapProps = {
     groupKey: string,
     dayModel: DayModel,
     activeGroupEvents: Set<string>,
-    marked: boolean
+    marked: boolean,
+    groupLayer: number
 }
 
-export default function EventsGroupGridWrap({ groupKey, dayModel, activeGroupEvents, marked } : EventsGroupGridWrapProps) {
+export default function EventsGroupGridWrap({ groupKey, dayModel, activeGroupEvents, marked, groupLayer } : EventsGroupGridWrapProps) {
     const [activeIndex, setActiveIndex] = useState(-1);
     
     useEffect(() => {
@@ -41,7 +42,7 @@ export default function EventsGroupGridWrap({ groupKey, dayModel, activeGroupEve
 
     return (
         <>
-        <EventsGroup groupKey={groupKey} dayModel={dayModel} activeIndex={activeIndex} noText={eventContinuation} marked={marked} colSpan={colSpan} showEvent={eventStartDay}></EventsGroup>
+        <EventsGroup groupKey={groupKey} dayModel={dayModel} activeIndex={activeIndex} noText={eventContinuation} marked={marked} colSpan={colSpan} showEvent={eventStartDay} groupLayer={groupLayer}></EventsGroup>
         </>
     )
 }

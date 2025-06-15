@@ -9,6 +9,7 @@ type ItemsIndicatorCarouselProps = {
     activeIndex: number
 }
 
+const MAX_SIZE = 3;
 
 export default function ItemsIndicatorCarousel({ carouselKey, count, activeIndex }: ItemsIndicatorCarouselProps) {
     const [animate, setAnimate] = useState(false);
@@ -27,16 +28,17 @@ export default function ItemsIndicatorCarousel({ carouselKey, count, activeIndex
 
     return (
         <div className='flex flex-row px-4 py-1 items-center'>
-            <ArrowLeft className="h-fit w-fit fill-gray-400"></ArrowLeft>
+            { Math.floor(activeIndex / 3) != 0 && 
+            <ArrowLeft className="h-fit w-fit fill-gray-400"></ArrowLeft> }
             <div className={`transition-all duration-500 flex flex-row gap-1 ${animate ? '-translate-x-2 opacity-0' : 'translate-x-0 opacity-100'}`}>
-                {Array.from({ length: count }).map((_, i) => {
+                {Array.from({ length: Math.min(MAX_SIZE, count - Math.floor(activeIndex / 3) * 3) }).map((_, i) => {
                     return (
-                        <ItemIndicator key={`${carouselKey}-${i}-carousel`} highlight={activeIndex === i}/>
+                        <ItemIndicator key={`${carouselKey}-${i}-carousel`} highlight={activeIndex % MAX_SIZE === i }/>
                     )
                 })}
             </div>
-
-            <ArrowRight className="h-fit w-fit fill-gray-400"></ArrowRight>
+            { Math.floor(activeIndex / 3) !== Math.floor(count / 3) && count > MAX_SIZE &&
+            <ArrowRight className="h-fit w-fit fill-gray-400"></ArrowRight> }
         </div>
     );
 }

@@ -11,7 +11,7 @@ function App() {
   });
 
   return (
-      <div className="flex gap-4 p-4 w-full">
+      <div className="flex gap-4 p-4 w-full h-fit">
         <WeeksGrid currDay={today} weeksBefore={1} weeksAfter={1}></WeeksGrid>
       </div>
   );

@@ -10,7 +10,7 @@ export default function EventBox({ event, noText }: { event: EventModel, noText:
             <div className="flex flex-col bg-gray-200 p-2 h-full overflow-hidden">
                 <h3 className="whitespace-nowrap">{noText ? '' : event.summary}</h3>
                 {!event.isAllDay() &&
-                <p className="no-wrap text-center">{noText ? '' : `${getTimeText(event.start)} - ${getTimeText(event.end)}`}</p> }
+                <p className="no-wrap text-left">{noText ? '' : `${getTimeText(event.start)} - ${getTimeText(event.end)}`}</p> }
             </div>
         </div>
     );

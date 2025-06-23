@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import { getWeeksDays } from "../../utils/getDays";
 import DayModel from "../../models/DayModel";
-import DayBox from "./DayBox";
 import { fetchEvents } from "../../services/calendarEventsService";
 import assignEventsToDays from "../../helpers/assignEventsToDays";
-import isOnTheSameDate from "../../utils/isOnTheSameDate";
 import EventGroupsService from "../../services/EventGroupsService";
-import EventsGroupGridWrap from "../Events/EventsGroupGridWrap";
+import WeekGrid, { WeekDays } from "./WeekGrid";
 
 export default function WeeksGrid({ currDay, weeksBefore, weeksAfter }: { currDay: Date, weeksBefore: number, weeksAfter: number }) {
     const [days, setDays] = useState<DayModel[]>([]);
@@ -44,27 +42,14 @@ export default function WeeksGrid({ currDay, weeksBefore, weeksAfter }: { currDa
 
     return (
         <div className="w-full">
+            {/* show every week in WeekGrid */}
             {splitIntoSevens(days).map((week) => 
-                weeksGrid(week, currDay, eventGroupService, layer)
+                <WeekGrid week={week} currDay={currDay} eventGroupService={eventGroupService} layer={layer}></WeekGrid>
             )}
         </div>
     );
 }
 
-function weeksGrid(week: DayModel[], currDay: Date, eventGroupService: EventGroupsService, layer: number) {
-    return (
-        <div className="grid grid-rows-[8em_1fr_6em] grid-cols-[repeat(7,_14%)] h-1/3">
-            {week.map((day, i) => {
-                const marked = isOnTheSameDate(day.day, currDay);
-
-                return (<>
-                        <DayBox key={day.day.toString()} dayModel={day} marked={marked}></DayBox>
-                        <EventsGroupGridWrap groupKey={day.toString()} dayModel={day} activeGroupEvents={eventGroupService.getActiveEvents(day.groupId ?? "", layer)} marked={marked} groupLayer={eventGroupService.getGroupLayer(day.groupId ?? "", layer)}></EventsGroupGridWrap>
-                </>)
-            })}
-        </div>
-    );
-}
 function getTimeFrame(weeksBefore: number, weeksAfter: number) {
     const now = new Date();
     return [
@@ -78,7 +63,7 @@ function getTimeFrame(weeksBefore: number, weeksAfter: number) {
 function splitIntoSevens(arr: DayModel[]) {
     const result = [];
     for (let i = 0; i < arr.length; i += 7) {
-        result.push(arr.slice(i, i + 7));
+        result.push(arr.slice(i, i + 7) as WeekDays);
     }
     return result;
 }

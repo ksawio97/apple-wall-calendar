@@ -19,11 +19,11 @@ export default function EventsGroup({ groupKey, dayModel, activeIndex, noText, m
 
     return (
         <>
-            <div className={`row-start-2 row-end-3 w-full h-full ${marked ? 'bg-slate-300' : ''}`}>
+            <div className={`row-start-2 row-end-3 w-full h-full ${marked ? 'bg-surface-container' : ''}`}>
                 { eventsStartingTodayCount > 0 && <ItemsIndicatorCarousel carouselKey={`${groupKey}-${dayModel.day}`} count={eventsStartingTodayCount} activeIndex={groupLayer}></ItemsIndicatorCarousel> }
             </div>
             {/* when no event is active we need to render so grid pos will be occupied, when show event we just display active event */}
-            { (activeIndex === -1 || showEvent) && <div className={`row-start-3 row-end-4 w-full h-full overflow-hidden px-1 ${marked ? 'bg-slate-300' : ''}`} style={{ gridColumn: `span ${colSpan}`}}> 
+            { (activeIndex === -1 || showEvent) && <div className={`row-start-3 row-end-4 w-full h-full overflow-hidden px-1 ${marked ? 'bg-surface-container' : ''}`} style={{ gridColumn: `span ${colSpan}`}}> 
                 { showEvent && <EventBox event={dayModel.events[activeIndex]} noText={noText}></EventBox>}
             </div> }
         </>

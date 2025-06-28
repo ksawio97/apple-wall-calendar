@@ -13,7 +13,7 @@ type WeekGridProps = {
 
 export default function WeekGrid({ week, currDay, eventGroupService, layer }: WeekGridProps) {
     return (
-        <div className="grid grid-rows-[8em_1fr_6em] grid-cols-[repeat(7,_14%)] h-1/3">
+        <div className="grid grid-rows-[8em_1em_6em] grid-cols-[repeat(7,_14%)]">
             {week.map((day) => {
                 const marked = isOnTheSameDate(day.day, currDay);
 

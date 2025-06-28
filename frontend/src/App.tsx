@@ -12,7 +12,7 @@ function App() {
 
   return (
       <div className="flex gap-4 p-4 w-full bg-surface h-screen">
-        <WeeksGrid currDay={today} weeksBefore={1} weeksAfter={1}></WeeksGrid>
+        <WeeksGrid currDay={today} weeksBefore={0} weeksAfter={1}></WeeksGrid>
       </div>
   );
 }

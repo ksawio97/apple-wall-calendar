@@ -8,12 +8,12 @@ export type WeekDays = [DayModel, DayModel, DayModel, DayModel, DayModel, DayMod
 
 
 type WeekGridProps = {
-    week: WeekDays, currDay: Date, eventGroupService: EventGroupsService, layer: number
+    week: WeekDays, currDay: Date, eventGroupService: EventGroupsService, layer: number, weeks: number
 }
 
-export default function WeekGrid({ week, currDay, eventGroupService, layer }: WeekGridProps) {
+export default function WeekGrid({ week, currDay, eventGroupService, layer, weeks }: WeekGridProps) {
     return (
-        <div className="grid grid-rows-[8em_1em_6em] grid-cols-[repeat(7,_14%)]">
+        <div className="grid grid-rows-[auto_1em_6em] grid-cols-[repeat(7,_14%)]" style={{ height: `${100/2}%`}}>
             {week.map((day) => {
                 const marked = isOnTheSameDate(day.day, currDay);
 

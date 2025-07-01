@@ -1,6 +1,7 @@
 import { useState } from "react";
 import WeeksGrid from "./components/Calendar/WeeksGrid";
 import useOnDayChange from "./hooks/useOnDayChange";
+import Panel from "./components/Panel/Panel";
 
 function App() {
   // we save today to update WeeksGrid everyday
@@ -11,9 +12,13 @@ function App() {
   });
 
   return (
-      <div className="flex gap-4 p-4 w-full bg-surface h-screen">
+    <div className="bg-surface h-full">
+        <Panel></Panel>
+        <div className="flex gap-4 px-4 w-full h-full">
         <WeeksGrid currDay={today} weeksBefore={0} weeksAfter={1}></WeeksGrid>
       </div>
+    </div>
+
   );
 }
 

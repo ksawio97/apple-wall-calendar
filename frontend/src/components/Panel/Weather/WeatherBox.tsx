@@ -8,8 +8,8 @@ export default function WeatherBox({ weatherInfo }: { weatherInfo: WeatherModel 
     }, [weatherInfo.weather_code, weatherInfo.is_day]);
 
     return (
-        <div className="flex flex-row bg-secondary rounded-lg p-4 items-center">
-            <p className="text-4xl text-secondary-on">
+        <div className="flex flex-row bg-tertiary rounded-lg p-4 items-center">
+            <p className="text-4xl text-tertiary-on">
                 {weatherInfo.temperature}°C
             </p>
             {weatherImg && (

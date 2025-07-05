@@ -44,7 +44,14 @@ export default function WeeksGrid({ currDay, weeksBefore, weeksAfter }: { currDa
         <div className="w-full">
             {/* show every week in WeekGrid */}
             {splitIntoSevens(days).map((week) => 
-                <WeekGrid week={week} currDay={currDay} eventGroupService={eventGroupService} layer={layer} weeks={weeksBefore + weeksAfter + 1}></WeekGrid>
+                <WeekGrid
+                    key={week[0].day.toISOString()}
+                    week={week}
+                    currDay={currDay}
+                    eventGroupService={eventGroupService}
+                    layer={layer}
+                    weeks={weeksBefore + weeksAfter + 1}
+                />
             )}
         </div>
     );

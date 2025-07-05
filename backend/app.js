@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const calendarRoutes = require('./routes/calendar');
+const weatherRoutes = require('./routes/weather');
 
 app.use((req, res, next) => {
     // Nagłówki CORS
@@ -10,6 +11,6 @@ app.use((req, res, next) => {
 
     next();
 });
-app.use(calendarRoutes);
+app.use(calendarRoutes, weatherRoutes);
 
 module.exports = app

@@ -17,7 +17,7 @@ exports.getWeatherInfo = async (req, res) => {
     const result = {
       temperature: current.temperature_2m,
       rain: current.rain > 0,
-      snowfall_mm: current.snowfall > 0
+      snowfall: current.snowfall > 0
     };
 
     res.json(result);

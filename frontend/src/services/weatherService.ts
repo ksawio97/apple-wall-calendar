@@ -20,7 +20,7 @@ export async function getWeatherInfo() {
             }
             return response.json();
         }).then(data => {
-            return new WeatherModel(data.temperature, data.rain, data.snowfall);
+            return new WeatherModel(data.temperature, data.weather_code, data.is_day);
         }).catch(error => {
             console.error('Error fetching weather info:', error);
             return null;

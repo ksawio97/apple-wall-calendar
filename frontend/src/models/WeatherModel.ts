@@ -1,12 +1,12 @@
 class WeatherModel {
     temperature: number;
-    rain: boolean;
-    snowfall: boolean;
+    weather_code: number;
+    is_day: boolean;
 
-    constructor(temperature: number, rain: boolean, snowfall: boolean) {
+    constructor(temperature: number, weather_code: number, is_day: boolean) {
         this.temperature = temperature;
-        this.rain = rain;
-        this.snowfall = snowfall;
+        this.weather_code = weather_code;
+        this.is_day = is_day;
     }
 }
 

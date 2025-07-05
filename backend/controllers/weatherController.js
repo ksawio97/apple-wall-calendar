@@ -4,7 +4,7 @@ exports.getWeatherInfo = async (req, res) => {
         return res.status(400).json({ error: 'Missing latitude, longitude or timezone query parameters' });
     }
 
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,precipitation,rain,snowfall&temperature_unit=celsius&precipitation_unit=mm&timezone=${timezone}`;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code,is_day&temperature_unit=celsius&precipitation_unit=mm&timezone=${timezone}`;
 
     const response = await fetch(url);
     if (!response.ok) {
@@ -16,8 +16,8 @@ exports.getWeatherInfo = async (req, res) => {
     const current = data.current;
     const result = {
       temperature: current.temperature_2m,
-      rain: current.rain > 0,
-      snowfall: current.snowfall > 0
+      weather_code: current.weather_code,
+      is_day: current.is_day,
     };
 
     res.json(result);

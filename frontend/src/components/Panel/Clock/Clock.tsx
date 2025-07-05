@@ -12,7 +12,7 @@ export default function Clock({}) {
 
 
     return (
-        <div className="text-4xl font-mono text-primary-on bg-primary px-8 py-4 rounded-xl shadow-xl w-fit">
+        <div className="text-4xl font-mono text-primary-on bg-primary px-8 py-4 rounded-lg shadow-xl w-fit flex items-center">
             {formatTime(time)}
         </div>
     );

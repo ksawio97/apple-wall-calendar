@@ -13,7 +13,6 @@ export async function getWeatherInfo() {
 
     return fetch((process.env.REACT_APP_BACKEND_LINK || "") + "weather" + '?latitude=' + locationInfo.latitude + '&longitude=' + locationInfo.longitude + '&timezone=' + locationInfo.timezone)
         .then(response => {
-            console.log(response);
             if (!response.ok) {
                 console.error('Couldn\'t fetch weather info from backend: ', response.statusText);
                 return null;

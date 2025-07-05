@@ -7,13 +7,22 @@ export default function WeatherWrapper() {
     const [weatherInfo, setWeatherInfo] = useState<WeatherModel | null>(null);
 
     useEffect(() => {
-        getWeatherInfo()
+        const setWeather = () => getWeatherInfo()
             .then((data) => {
                 setWeatherInfo(data);
             })
             .catch((error) => {
                 console.error("Error fetching weather data:", error);
             });
+        // Initial fetch
+        setWeather();
+
+        const interval = setInterval(() => {
+            // Fetch weather data every 30 minutes
+            setWeather();
+        }, 30 * 60 * 1000); // 30 minutes
+
+        return () => clearInterval(interval);
     }, []);
 
     return (

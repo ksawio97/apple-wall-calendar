@@ -11,7 +11,7 @@ export default function DayBox({ dayModel, marked }: DayBoxProps){
                 <p className='text-center font-bold text-secondary-on'>{dayModel.day.toLocaleString('en', { month: 'short'})}</p>
             </div>
             <div className="w-full h-full flex items-center justify-center py-6">
-                <h3 className="p-8 text-4xl text-surface-on">{dayModel.day.getDate()}</h3>
+                <h3 className="p-8 text-5xl text-surface-on">{dayModel.day.getDate()}</h3>
             </div>
         </div>
     );

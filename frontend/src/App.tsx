@@ -2,6 +2,7 @@ import { useState } from "react";
 import WeeksGrid from "./components/Calendar/WeeksGrid";
 import useOnDayChange from "./hooks/useOnDayChange";
 import Panel from "./components/Panel/Panel";
+import { useEffect } from "react";
 
 function App() {
   // we save today to update WeeksGrid everyday

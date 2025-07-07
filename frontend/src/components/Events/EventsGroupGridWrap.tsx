@@ -31,6 +31,8 @@ export default function EventsGroupGridWrap({ groupKey, dayModel, activeGroupEve
     }, [dayModel, activeIndex]);
 
     const colSpan = useMemo(() => {
+        if (activeIndex === -1)
+            return 1;
         if (!eventStartDay)
             return 0;
         const weekDay = dayModel.day.getDay() === 0 ? 7 : dayModel.day.getDay();

@@ -1,7 +1,7 @@
 import EventBox from "./EventBox";
 import DayModel from "../../models/DayModel";
 import ItemsIndicatorCarousel from "../ItemIndicator/ItemsIndicatorCarousel";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 type EventsGroupProps = {
     groupKey: string,
@@ -20,7 +20,7 @@ export default function EventsGroup({ groupKey, dayModel, activeIndex, noText, m
     return (
         <>
             <div className={`row-start-2 row-end-3 w-full h-full ${marked ? 'bg-surface-container' : ''}`}>
-                { eventsStartingTodayCount > 0 && <ItemsIndicatorCarousel carouselKey={`${groupKey}-${dayModel.day}`} count={eventsStartingTodayCount} activeIndex={groupLayer}></ItemsIndicatorCarousel> }
+                { eventsStartingTodayCount > 0 && <ItemsIndicatorCarousel carouselKey={`${groupKey}-${dayModel.day}`} count={eventsStartingTodayCount} activeIndex={noText || !showEvent ? eventsStartingTodayCount : (groupLayer % eventsStartingTodayCount)}></ItemsIndicatorCarousel> }
             </div>
             {/* when no event is active we need to render so grid pos will be occupied, when show event we just display active event */}
             { (activeIndex === -1 || showEvent) && <div className={`row-start-3 row-end-4 w-full h-full overflow-hidden px-1 ${marked ? 'bg-surface-container' : ''}`} style={{ gridColumn: `span ${colSpan}`}}> 

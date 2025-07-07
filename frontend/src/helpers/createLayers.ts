@@ -1,4 +1,5 @@
 import EventModel from "../models/EventModel";
+import isOnTheSameDate from "../utils/isOnTheSameDate";
 
 export default function createLayers(events: EventModel[]): EventModel[][] {
   const sorted = [...events].sort((a, b) => a.start.getTime() - b.start.getTime());
@@ -9,7 +10,8 @@ export default function createLayers(events: EventModel[]): EventModel[][] {
 
     for (const layer of layers) {
       const lastEventInLayer = layer[layer.length - 1];
-      if (lastEventInLayer.end.getTime() <= event.start.getTime()) {
+      
+      if (!(lastEventInLayer.end.getTime() > event.start.getTime() || isOnTheSameDate(lastEventInLayer.end, event.start))) {
         layer.push(event);
         placed = true;
         break;

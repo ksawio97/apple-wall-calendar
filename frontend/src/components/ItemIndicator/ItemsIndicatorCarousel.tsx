@@ -24,16 +24,17 @@ export default function ItemsIndicatorCarousel({ carouselKey, count, activeIndex
         }, 500); // must match duration of animation
 
         return () => clearTimeout(timeout);
-    }, [activeIndex]);
+    }, [activeIndex, count]);
 
+    const layers = Math.floor(activeIndex / 3);
     return (
         <div className='flex flex-row px-4 py-1 items-center'>
-            { Math.floor(activeIndex / 3) != 0 && 
+            {  layers !== 0 && 
             <ArrowLeft className="h-fit w-fit fill-gray-400"></ArrowLeft> }
             <div className={`transition-all duration-500 flex flex-row gap-1 ${animate ? '-translate-x-2 opacity-0' : 'translate-x-0 opacity-100'}`}>
-                {Array.from({ length: Math.min(MAX_SIZE, count - Math.floor(activeIndex / 3) * 3) }).map((_, i) => {
+                {Array.from({ length: Math.min(MAX_SIZE, count - layers * 3) }).map((_, i) => {
                     return (
-                        <ItemIndicator key={`${carouselKey}-${i}-carousel`} highlight={activeIndex % MAX_SIZE === i }/>
+                        <ItemIndicator key={`${carouselKey}-${i}-carousel`} highlight={activeIndex === i }/>
                     )
                 })}
             </div>

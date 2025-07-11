@@ -1,5 +1,6 @@
 import getLocationInfo from "../helpers/getLocationInfo";
 import WeatherModel from "../models/WeatherModel";
+import getBackendLink from "../utils/getBackendLink";
 
 export async function getWeatherInfo() {
     let locationInfo;
@@ -11,7 +12,7 @@ export async function getWeatherInfo() {
         return null;
     }
 
-    return fetch((process.env.REACT_APP_BACKEND_LINK || "") + "weather" + '?latitude=' + locationInfo.latitude + '&longitude=' + locationInfo.longitude + '&timezone=' + locationInfo.timezone)
+    return fetch(getBackendLink() + "weather" + '?latitude=' + locationInfo.latitude + '&longitude=' + locationInfo.longitude + '&timezone=' + locationInfo.timezone)
         .then(response => {
             if (!response.ok) {
                 console.error('Couldn\'t fetch weather info from backend: ', response.statusText);

@@ -1,10 +1,11 @@
 import EventModel from "../models/EventModel";
+import getBackendLink from "../utils/getBackendLink";
 import toYMDISODateString from "../utils/toYMDISODateString";
 
 export async function fetchEvents(from: Date, to: Date): Promise<EventModel[]> {
     const [fromText, toText] = [from, to].map(d => toYMDISODateString(d));
 
-    const response = await fetch((process.env.REACT_APP_BACKEND_LINK || "") + `calendar/events?from=${fromText}&to=${toText}`);
+    const response = await fetch(getBackendLink() + `calendar/events?from=${fromText}&to=${toText}`);
     if (!response.ok) {
         console.error('Couldn\'t fetch events from backend')
         return [];

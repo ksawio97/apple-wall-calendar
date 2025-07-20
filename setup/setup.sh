@@ -18,14 +18,4 @@ npm run build
 # install backend dependencies
 cd ../backend
 npm install
-
-# start ecosystem
-cd ..
-echo "Starting ecosystem with pm2..."
-pm2 start ./setup/ecosystem.config.js
-
-pm2 save
-
-# Run pm2 startup and get the command to run with sudo
-startup_cmd=$(pm2 startup | grep sudo)
-eval "$startup_cmd"
+cd ../..

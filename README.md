@@ -1,5 +1,23 @@
 # Apple Wall Calendar
 This projects is a digital calendar with events displayed from apple official calendar app.
 
-## Pre-Build Configuration
-Before running the frontend and backend, make sure to create the file `/backend/env/.env` and add the `CALENDAR_LINK` variable to it with a link to the public Apple Calendar. Otherwise, events won't be displayed.
+## Configuration
+Download `/setup/setup.sh` file 
+```
+curl https://raw.githubusercontent.com/ksawio97/apple-wall-calendar/master/setup/setup.sh -o setup.sh
+```
+Run setup file
+```
+sudo sh setup.sh
+```
+Add valid `CALENDAR_LINK` to `/setup/ecosystem.config.js` then start pm2 ecosystem
+```
+pm2 start ./apple-wall-calendar/setup/ecosystem.config.js
+```
+
+
+### TODO
+- feat: check if new tasks were added
+- fix: cursor showing in kiosk mode
+- fix: allow geolocation issues in kiosk mode
+- photos of calendar on the wall

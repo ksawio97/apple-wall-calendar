@@ -9,18 +9,25 @@ export type WeekDays = [DayModel, DayModel, DayModel, DayModel, DayModel, DayMod
 
 
 type WeekGridProps = {
-    week: WeekDays, currDay: Date, eventGroupService: EventGroupsService, layer: number, weeks: number
+    week: WeekDays, currDay: Date, eventGroupService: EventGroupsService, layer: number, weekIndex: number, weeks: number
 }
 
-export default function WeekGrid({ week, currDay, eventGroupService, layer, weeks }: WeekGridProps) {
+export default function WeekGrid({ week, currDay, eventGroupService, layer, weeks, weekIndex }: WeekGridProps) {
     return (
-        <div className="grid grid-rows-[auto_1.2em_6em] grid-cols-[repeat(7,_14%)]" style={{ height: `${100/2}%`}}>
+        <div className="grid grid-rows-[auto_1.2em_6em] grid-cols-[repeat(7,_14%)]" style={{ height: `${100/weeks}%`}}>
             {week.map((day) => {
                 const marked = isOnTheSameDate(day.day, currDay);
 
                 return (<React.Fragment key={day.day.toString()}>
                         <DayBox  dayModel={day} marked={marked}></DayBox>
-                        <EventsGroupGridWrap groupKey={day.toString()} dayModel={day} activeGroupEvents={eventGroupService.getActiveEvents(day.groupId ?? "", layer)} marked={marked} groupLayer={eventGroupService.getGroupLayer(day.groupId ?? "", layer)}></EventsGroupGridWrap>
+                    <EventsGroupGridWrap
+                        groupKey={day.toString()}
+                        dayModel={day}
+                        activeGroupEvents={eventGroupService.getActiveEvents(day.groupId ?? "", layer)}
+                        marked={marked}
+                        groupLayer={eventGroupService.getGroupLayer(day.groupId ?? "", layer)}
+                        weekIndex={weekIndex}
+                    />
                 </React.Fragment>)
             })}
         </div>

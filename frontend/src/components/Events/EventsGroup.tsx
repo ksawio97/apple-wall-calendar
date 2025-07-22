@@ -1,7 +1,7 @@
 import EventBox from "./EventBox";
 import DayModel from "../../models/DayModel";
 import ItemsIndicatorCarousel from "../ItemIndicator/ItemsIndicatorCarousel";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
 type EventsGroupProps = {
     groupKey: string,
@@ -11,11 +11,12 @@ type EventsGroupProps = {
     marked: boolean,
     colSpan: number,
     showEvent: boolean,
-    groupLayer: number
+    groupLayer: number,
+    weekIndex: number
 };
 
-export default function EventsGroup({ groupKey, dayModel, activeIndex, noText, marked, colSpan, showEvent, groupLayer }: EventsGroupProps) {
-    const eventsStartingTodayCount = useMemo(() => dayModel.getEventsCountDayStart(), [dayModel]);
+export default function EventsGroup({ groupKey, dayModel, activeIndex, noText, marked, colSpan, showEvent, groupLayer, weekIndex }: EventsGroupProps) {
+    const eventsStartingTodayCount = useMemo(() => dayModel.getEventsCountDayStart(weekIndex), [dayModel, weekIndex]);
 
     return (
         <>

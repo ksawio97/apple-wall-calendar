@@ -7,10 +7,12 @@ type EventsGroupGridWrapProps = {
     dayModel: DayModel,
     activeGroupEvents: Set<string>,
     marked: boolean,
-    groupLayer: number
+    groupLayer: number,
+    weekIndex: number
 }
 
-export default function EventsGroupGridWrap({ groupKey, dayModel, activeGroupEvents, marked, groupLayer } : EventsGroupGridWrapProps) {
+export default function EventsGroupGridWrap({ groupKey, dayModel, activeGroupEvents, marked, groupLayer, weekIndex } : EventsGroupGridWrapProps) {
+    // active index is the index of the event that is currently shown
     const [activeIndex, setActiveIndex] = useState(-1);
     
     useEffect(() => {
@@ -24,12 +26,15 @@ export default function EventsGroupGridWrap({ groupKey, dayModel, activeGroupEve
     const [eventStartDay, eventContinuation] = useMemo(() => {
         if (activeIndex === -1)
             return [false, false];
-        const isEventStart = dayModel.events[activeIndex].isFirstDayOfEvent(dayModel.day);
+
+
+        const isEventStart = dayModel.events[activeIndex].isFirstDisplayedDayOfEvent(dayModel.day, weekIndex);
         const isMonday = dayModel.day.getDay() === 1;
         // active event start or monday, 
         return [isEventStart || isMonday, !isEventStart && isMonday];
-    }, [dayModel, activeIndex]);
+    }, [dayModel, activeIndex, weekIndex]);
 
+    // colSpan is the number of columns the event should span
     const colSpan = useMemo(() => {
         if (activeIndex === -1)
             return 1;
@@ -44,7 +49,16 @@ export default function EventsGroupGridWrap({ groupKey, dayModel, activeGroupEve
 
     return (
         <>
-        <EventsGroup groupKey={groupKey} dayModel={dayModel} activeIndex={activeIndex} noText={eventContinuation} marked={marked} colSpan={colSpan} showEvent={eventStartDay} groupLayer={groupLayer}></EventsGroup>
+            <EventsGroup 
+                groupKey={groupKey} 
+                dayModel={dayModel} 
+                activeIndex={activeIndex} 
+                noText={eventContinuation} 
+                marked={marked} 
+                colSpan={colSpan} 
+                showEvent={eventStartDay} 
+                groupLayer={groupLayer}
+                weekIndex={weekIndex}></EventsGroup>
         </>
     )
 }

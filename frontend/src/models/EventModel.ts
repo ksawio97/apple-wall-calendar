@@ -23,10 +23,14 @@ export default class EventModel {
     return { startOfDay, endOfDay };
   }
 
-  isFirstDayOfEvent(day: Date) {
+  isFirstDisplayedDayOfEvent(day: Date, weekIndex: number): boolean {
       const { startOfDay } = this.getFullDaysRange();
 
-      return startOfDay.getTime() <= day.getTime() && day.getTime() < (startOfDay.getTime() + 1000 * 60 * 60 * 24);
+      // 1st day of event
+      const isFirstDayOfEvent = startOfDay.getTime() <= day.getTime() && day.getTime() < (startOfDay.getTime() + 1000 * 60 * 60 * 24);
+      // 
+      const isFirstDisplayedDayOfEvent = isFirstDayOfEvent || (weekIndex === 0 && day.getDay() === 1);  
+      return isFirstDisplayedDayOfEvent;
   }
 
   isAllDay() {

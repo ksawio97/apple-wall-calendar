@@ -1,33 +1,9 @@
 import { useEffect, useState } from "react";
-import { getWeeksDays } from "../../utils/getDays";
 import DayModel from "../../models/DayModel";
-import { fetchEvents } from "../../services/calendarEventsService";
-import assignEventsToDays from "../../helpers/assignEventsToDays";
 import EventGroupsService from "../../services/EventGroupsService";
-import WeekGrid, { WeekDays } from "./WeekGrid";
+import WeekGrid, { DayModelWithEvents, WeekDays } from "./WeekGrid";
 
-export default function WeeksGrid({ currDay, weeksBefore, weeksAfter }: { currDay: Date, weeksBefore: number, weeksAfter: number }) {
-    const [days, setDays] = useState<DayModel[]>([]);
-    const [eventGroupService, setEventGroupService] = useState(new EventGroupsService([]));
-
-    // fetch events for days
-    useEffect(() => {
-        const [from, to] = getTimeFrame(weeksBefore, weeksAfter);
-        fetchEvents(from, to)
-            .then((events) => {
-                const groupService = new EventGroupsService(events);
-                let weekDays = getWeeksDays(currDay, weeksBefore, weeksAfter);
-                const daysModels = weekDays.map((d) => new DayModel(d, [], groupService.getGroupId(d)));
-                assignEventsToDays(daysModels, events);
-                
-                setEventGroupService(groupService);
-                return daysModels
-            })
-            .then((weekDays) => {
-                setDays(weekDays);
-            })
-    }, [currDay, weeksAfter, weeksBefore, setEventGroupService]);
-    
+export default function WeeksGrid({ days, eventGroupService, currDay }: { days: DayModel[], eventGroupService: EventGroupsService, currDay: Date }) {
     const [layer, setLayer] = useState(0);
 
     // every 4 s change events shown
@@ -40,38 +16,42 @@ export default function WeeksGrid({ currDay, weeksBefore, weeksAfter }: { currDa
         };
     }, [layer]);
 
+    const weeks = splitIntoSevens(
+        attachGroupInfo(days, eventGroupService, layer)
+    );
+
     return (
         <div className="w-full">
             {/* show every week in WeekGrid */}
-            {splitIntoSevens(days).map((week, i) => 
+            {weeks.map((week, i) => 
                 <WeekGrid
-                    key={week[0].day.toISOString()}
+                    key={week[0].dayModel.day.toISOString()}
                     week={week}
-                    currDay={currDay}
-                    eventGroupService={eventGroupService}
-                    layer={layer}
                     weekIndex={i}
-                    weeks={weeksBefore + weeksAfter + 1}
+                    weeksCount={weeks.length}
                 />
             )}
         </div>
     );
 }
 
-function getTimeFrame(weeksBefore: number, weeksAfter: number) {
-    const now = new Date();
-    return [
-        // first week monday time
-        now.getTime() - weeksBefore * 7 * 24 * 60 * 60 * 1000 - (now.getDay() === 0 ? 6 : now.getDay() - 1) * 24 * 60 * 60 * 1000,
-        // last week sunday time
-        now.getTime() + weeksAfter * 7 * 24 * 60 * 60 * 1000 + (6 - (now.getDay() === 0 ? 6 : now.getDay() - 1)) * 24 * 60 * 60 * 1000
-    ].map(ms => new Date(ms));
+function attachGroupInfo(days: DayModel[], eventGroupService: EventGroupsService, layer: number): DayModelWithEvents[] {
+    return days.map(day => ({
+        dayModel: day,
+        groupInfo: {
+            activeGroupEvents: eventGroupService.getActiveEvents(day.groupId ?? "", layer),
+            groupLayer: eventGroupService.getGroupLayer(day.groupId ?? "", layer)
+        }
+    }));
 }
-
-function splitIntoSevens(arr: DayModel[]) {
+function splitIntoSevens(arr: DayModelWithEvents[]) {
     const result = [];
     for (let i = 0; i < arr.length; i += 7) {
-        result.push(arr.slice(i, i + 7) as WeekDays);
+        const weekDays = arr.slice(i, i + 7);
+        if (weekDays.length !== 7) {
+            throw new Error("Each week must have exactly 7 days");
+        }
+        result.push(weekDays as WeekDays);
     }
     return result;
 }

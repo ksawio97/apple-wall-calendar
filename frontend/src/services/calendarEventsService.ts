@@ -4,7 +4,6 @@ import toYMDISODateString from "../utils/toYMDISODateString";
 
 export async function fetchEvents(from: Date, to: Date): Promise<EventModel[]> {
     const [fromText, toText] = [from, to].map(d => toYMDISODateString(d));
-    console.log(`Fetching events from ${fromText} to ${toText}`);
     const response = await fetch(getBackendLink() + `calendar/events?from=${fromText}&to=${toText}`);
     if (!response.ok) {
         console.error('Couldn\'t fetch events from backend')
@@ -13,6 +12,5 @@ export async function fetchEvents(from: Date, to: Date): Promise<EventModel[]> {
     const events = (await response.json()).map((res: { uid: string, summary: string, start: number, end: number }) => {
         return new EventModel(res.uid, res.summary, new Date(res.start), new Date(res.end));
     });
-    console.log(events);
     return events;
 }

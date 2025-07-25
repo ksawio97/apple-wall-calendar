@@ -1,12 +1,12 @@
 import DayModel from "../../models/DayModel";
 import getMonthColor from "../../utils/getMonthColor";
 
-type DayBoxProps = { dayModel: DayModel, marked: boolean };
+type DayBoxProps = { dayModel: DayModel };
 
-export default function DayBox({ dayModel, marked }: DayBoxProps){
+export default function DayBox({ dayModel }: DayBoxProps){
 
     return (
-        <div className={`flex flex-col flex-grow-0 col-span-1 ${marked ? 'bg-surface-container' : ''}`}>
+        <div className={`flex flex-col flex-grow-0 col-span-1 ${dayModel.marked ? 'bg-surface-container' : ''}`}>
             <div className={`w-full items-center ${getMonthColor(dayModel.day)}`}>
                 <p className='text-center font-bold text-secondary-on'>{dayModel.day.toLocaleString('en', { month: 'short'})}</p>
             </div>

@@ -22,7 +22,7 @@ export default function WeekGrid({ week, weeksCount, weekIndex }: WeekGridProps)
         <div className="grid grid-rows-[auto_1.2em_6em] grid-cols-[repeat(7,_14%)]" style={{ height: `${100/weeksCount}%`}}>
             {week.map((day) => (
                 <React.Fragment key={day.dayModel.day.toString()}>
-                        <DayBox  dayModel={day.dayModel}></DayBox>
+                    <DayBox  dayModel={day.dayModel}></DayBox>
                     <EventsGroupGridWrap
                         groupKey={day.toString()}
                         dayModelWithEvents={day}

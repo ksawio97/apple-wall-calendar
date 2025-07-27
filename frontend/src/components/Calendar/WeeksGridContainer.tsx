@@ -1,5 +1,5 @@
 import WeeksGrid from "./WeeksGrid";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useState } from "react";
 import { fetchEvents } from "../../services/calendarEventsService";
 import EventGroupsService from "../../services/EventGroupsService";
@@ -8,6 +8,7 @@ import DayModel from "../../models/DayModel";
 import assignEventsToDays from "../../helpers/assignEventsToDays";
 import GridInfo from "../../types/GridInfo";
 import isOnTheSameDate from "../../utils/isOnTheSameDate";
+import { useDataRefresh } from "../../hooks/useDataRefresh";
 
 export type WeeksGridProps = {
     gridInfo: GridInfo;
@@ -16,9 +17,10 @@ export type WeeksGridProps = {
 export default function WeeksGridContainer({ gridInfo }: WeeksGridProps) {
     const [days, setDays] = useState<DayModel[]>([]);
     const [eventGroupService, setEventGroupService] = useState<EventGroupsService>(new EventGroupsService([]));
+    const { addDataRefreshListener, removeDataRefreshListener } = useDataRefresh();
+    const [from, to] = useMemo(() => getTimeFrame(gridInfo.weeksBefore, gridInfo.weeksAfter), [gridInfo.weeksBefore, gridInfo.weeksAfter]);
 
     const getEvents = () => {
-        const [from, to] = getTimeFrame(gridInfo.weeksBefore, gridInfo.weeksAfter);
         fetchEvents(from, to)
             .then((events) => {
                 const groupService = new EventGroupsService(events);
@@ -33,12 +35,20 @@ export default function WeeksGridContainer({ gridInfo }: WeeksGridProps) {
                 setDays(weekDays);
             });
     };
+
     // fetch events for days
-    useEffect(getEvents, [gridInfo, setEventGroupService]);
+    useEffect(getEvents, [gridInfo, setEventGroupService, from, to]);
+    // TODO add refresh listener to update events when they change
+    useEffect(() => {
+        fetchEvents(from, to)
+                    .then((events) => {
+                        
+
+                    });
+    }, [addDataRefreshListener, removeDataRefreshListener, from, to]);
 
     return (
         <WeeksGrid
-            currDay={gridInfo.currDay}
             days={days}
             eventGroupService={eventGroupService}
         />

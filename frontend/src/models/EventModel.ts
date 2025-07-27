@@ -45,4 +45,11 @@ export default class EventModel {
     const msPerDay = 1000 * 60 * 60 * 24;
     return Math.floor((endOfDay.getTime() - startOfDay.getTime()) / msPerDay) + 1;
   }
+
+  static isEqual(event1: EventModel, event2: EventModel): boolean {
+    return event1.uid === event2.uid &&
+           event1.summary === event2.summary &&
+           event1.start.getTime() === event2.start.getTime() &&
+           event1.end.getTime() === event2.end.getTime();
+  }
 }

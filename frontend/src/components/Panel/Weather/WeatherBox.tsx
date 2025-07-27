@@ -16,7 +16,7 @@ export default function WeatherBox({ weatherInfo }: { weatherInfo: WeatherModel 
             <img
                 src={weatherImg}
                 alt="Weather"
-                className="w-14 h-auto ml-2 drop-shadow-[0_0_2px_#000] brightness-85 contrast-120"
+                className="w-12 h-auto ml-2 drop-shadow-[0_0_2px_#000] brightness-85 contrast-120"
             />
             )}
         </div>

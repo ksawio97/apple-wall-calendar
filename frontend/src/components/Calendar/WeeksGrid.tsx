@@ -3,7 +3,7 @@ import DayModel from "../../models/DayModel";
 import EventGroupsService from "../../services/EventGroupsService";
 import WeekGrid, { DayModelWithEvents, WeekDays } from "./WeekGrid";
 
-export default function WeeksGrid({ days, eventGroupService, currDay }: { days: DayModel[], eventGroupService: EventGroupsService, currDay: Date }) {
+export default function WeeksGrid({ days, eventGroupService }: { days: DayModel[], eventGroupService: EventGroupsService }) {
     const [layer, setLayer] = useState(0);
 
     // every 4 s change events shown

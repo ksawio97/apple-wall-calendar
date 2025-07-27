@@ -21,7 +21,7 @@ export default function ProgressBar() {
             setProgress(prev => (prev + addProgress));
         }, updateMs);
         return () => clearInterval(interval);
-    }, [setProgress, progress]);
+    }, []);
 
     return (
         // not mine https://play.tailwindcss.com/53s5OjCLix

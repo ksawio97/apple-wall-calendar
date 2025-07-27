@@ -1,4 +1,4 @@
-import { useEffect, useState, createContext, useContext } from "react";
+import { useEffect, useRef, createContext, useContext } from "react";
 
 export const DATA_REFRESH_INTERVAL= 1000 * 30 // 30 seconds
 
@@ -19,27 +19,27 @@ const DataRefreshContext = createContext<DataRefreshContextType>({
 });
 
 export function DataRefreshProvider({ children }: { children: React.ReactNode }) {
-  const [dataRefresh, setDataRefresh] = useState<Map<number, DataRefresh>>(new Map<number, DataRefresh>());
+  const dataRefresh = useRef<Map<number, DataRefresh>>(new Map<number, DataRefresh>());
 
   const addDataRefreshListener = (callback: () => void) => {
-    const id = dataRefresh.size + 1;
+    const id = dataRefresh.current.size + 1;
     const newDataRefresh = { id, callback };
-    setDataRefresh((prev) => new Map(prev).set(id, newDataRefresh));
+    dataRefresh.current = new Map(dataRefresh.current).set(id, newDataRefresh)
 
     return { id };
   }
 
   const removeDataRefreshListener = (id: number) => {
-    setDataRefresh((prev) => {
-      const newDataRefresh = new Map(prev);
-      newDataRefresh.delete(id);
-      return newDataRefresh;
-    });
+
+    const newDataRefresh = new Map(dataRefresh.current);
+    newDataRefresh.delete(id);
+    dataRefresh.current = newDataRefresh;
+    
   }
 
   useEffect(() => {
     const fireEvents = () => {
-      dataRefresh.forEach((data) => {
+      dataRefresh.current.forEach((data) => {
         data.callback();
       });
     };

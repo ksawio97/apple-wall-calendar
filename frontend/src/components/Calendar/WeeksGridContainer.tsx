@@ -8,7 +8,6 @@ import DayModel from "../../models/DayModel";
 import assignEventsToDays from "../../helpers/assignEventsToDays";
 import GridInfo from "../../types/GridInfo";
 import isOnTheSameDate from "../../utils/isOnTheSameDate";
-import { useDataRefresh } from "../../hooks/useDataRefresh";
 
 export type WeeksGridProps = {
     gridInfo: GridInfo;
@@ -17,7 +16,6 @@ export type WeeksGridProps = {
 export default function WeeksGridContainer({ gridInfo }: WeeksGridProps) {
     const [days, setDays] = useState<DayModel[]>([]);
     const [eventGroupService, setEventGroupService] = useState<EventGroupsService>(new EventGroupsService([]));
-    const { addDataRefreshListener, removeDataRefreshListener } = useDataRefresh();
     const [from, to] = useMemo(() => getTimeFrame(gridInfo.weeksBefore, gridInfo.weeksAfter), [gridInfo.weeksBefore, gridInfo.weeksAfter]);
 
     const getEvents = () => {
@@ -38,14 +36,7 @@ export default function WeeksGridContainer({ gridInfo }: WeeksGridProps) {
 
     // fetch events for days
     useEffect(getEvents, [gridInfo, setEventGroupService, from, to]);
-    // TODO add refresh listener to update events when they change
-    useEffect(() => {
-        fetchEvents(from, to)
-                    .then((events) => {
-                        
 
-                    });
-    }, [addDataRefreshListener, removeDataRefreshListener, from, to]);
 
     return (
         <WeeksGrid

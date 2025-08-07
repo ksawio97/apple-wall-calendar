@@ -17,7 +17,8 @@ pm2 start ./apple-wall-calendar/setup/ecosystem.config.js
 
 
 ### TODO
-- feat: check if new tasks were added
+- add checking if events changed (it will require refactor of EventGroupsService to store its events in Dict)
 - fix: cursor showing in kiosk mode
 - fix: allow geolocation issues in kiosk mode
 - photos of calendar on the wall
+- add icon for data refresh progress bar

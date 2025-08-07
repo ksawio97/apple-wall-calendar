@@ -8,6 +8,7 @@ import DayModel from "../../models/DayModel";
 import assignEventsToDays from "../../helpers/assignEventsToDays";
 import GridInfo from "../../types/GridInfo";
 import isOnTheSameDate from "../../utils/isOnTheSameDate";
+import { useDataRefresh } from "../../hooks/useDataRefresh";
 
 export type WeeksGridProps = {
     gridInfo: GridInfo;
@@ -37,6 +38,17 @@ export default function WeeksGridContainer({ gridInfo }: WeeksGridProps) {
     // fetch events for days
     useEffect(getEvents, [gridInfo, setEventGroupService, from, to]);
 
+    // fetch events for days
+    useEffect(getEvents, [gridInfo, setEventGroupService, from, to]);
+
+    // update events on data refresh
+    const { addDataRefreshListener, removeDataRefreshListener } = useDataRefresh();
+    useEffect(() => {
+        const { id: eventsRefreshId } = addDataRefreshListener(getEvents);
+        return () => {
+            removeDataRefreshListener(eventsRefreshId);
+        };
+    }, []);
 
     return (
         <WeeksGrid

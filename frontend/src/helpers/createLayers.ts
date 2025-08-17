@@ -1,7 +1,8 @@
 import EventModel from "../models/EventModel";
+import UID from "../types/UID";
 import isOnTheSameDate from "../utils/isOnTheSameDate";
 
-export default function createLayers(events: EventModel[]): EventModel[][] {
+export default function createLayers(events: EventModel[]): UID[][] {
   const sorted = [...events].sort((a, b) => a.start.getTime() - b.start.getTime());
   const layers: EventModel[][] = [];
 
@@ -23,5 +24,5 @@ export default function createLayers(events: EventModel[]): EventModel[][] {
     }
   }
   
-  return layers;
+  return layers.map(l => l.map(e => e.uid));
 }

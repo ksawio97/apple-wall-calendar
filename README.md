@@ -17,7 +17,7 @@ pm2 start ./apple-wall-calendar/setup/ecosystem.config.js
 
 
 ### TODO
-- add checking if events changed (it will require refactor of EventGroupsService to store its events in Dict)
+- refactor: remove EventModel from DayModel, access it from eventService
 - fix: cursor showing in kiosk mode
 - fix: allow geolocation issues in kiosk mode
 - photos of calendar on the wall

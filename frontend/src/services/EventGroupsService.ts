@@ -1,16 +1,20 @@
 import createLayers from "../helpers/createLayers";
 import groupEvents from "../helpers/groupEvents";
 import EventModel from "../models/EventModel";
-export type GroupLayersInfo  = {
+import UID from '../types/UID';
+
+export type GroupLayersInfo = {
     groupId: string,
     startDate: Date,
     endDate: Date,
-    eventLayers: EventModel[][]
+    eventLayers: UID[][]
 }
 
 export default class EventGroupsService {
     groups: GroupLayersInfo[];
     groupIndexById: Map<string, number>;
+    // TODO use it instead of saving events in DayModel
+    events: Map<string, EventModel>;
 
     constructor(events: EventModel[]) {
         // groups are sorted by startDate which all are unique
@@ -24,6 +28,8 @@ export default class EventGroupsService {
                 eventLayers: createLayers(group.events),
             };
         });
+
+        this.events = new Map(events.map(e => [e.uid, e]));
     }
     // TODO optimize it to use binary search
     getGroupId(date: Date) {
@@ -43,7 +49,7 @@ export default class EventGroupsService {
     getActiveEvents(groupId: string, layerIndex: number): Set<string> {
         const group = this.getGroupInfoById(groupId);
         if (!group) return new Set();
-        return new Set((group.eventLayers[layerIndex % group.eventLayers.length] ?? []).map(e => e.uid));
+        return new Set((group.eventLayers[layerIndex % group.eventLayers.length] ?? []));
     }
 
     getGroupLayer(groupId: string, layerIndex: number) {

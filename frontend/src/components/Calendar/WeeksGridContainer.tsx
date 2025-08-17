@@ -9,6 +9,7 @@ import assignEventsToDays from "../../helpers/assignEventsToDays";
 import GridInfo from "../../types/GridInfo";
 import isOnTheSameDate from "../../utils/isOnTheSameDate";
 import { useDataRefresh } from "../../hooks/useDataRefresh";
+import eventsChanged from "../../helpers/eventsChanged";
 
 export type WeeksGridProps = {
     gridInfo: GridInfo;
@@ -23,21 +24,25 @@ export default function WeeksGridContainer({ gridInfo }: WeeksGridProps) {
         fetchEvents(from, to)
             .then((events) => {
                 const groupService = new EventGroupsService(events);
+                
+                // nothing changed don't change state
+                if (!eventsChanged(eventGroupService.events, groupService.events)) {
+                    return null;
+                }
                 let weekDays = getWeeksDays(gridInfo.currDay, gridInfo.weeksBefore, gridInfo.weeksAfter);
                 const daysModels = weekDays.map((d) => new DayModel(d, [], groupService.getGroupId(d), isOnTheSameDate(d, gridInfo.currDay)));
                 assignEventsToDays(daysModels, events);
+                // dsa dasewa
 
                 setEventGroupService(groupService);
                 return daysModels;
             })
             .then((weekDays) => {
-                setDays(weekDays);
+                if (weekDays !== null) {
+                    setDays(weekDays);
+                }
             });
     };
-
-    // fetch events for days
-    useEffect(getEvents, [gridInfo, setEventGroupService, from, to]);
-
     // fetch events for days
     useEffect(getEvents, [gridInfo, setEventGroupService, from, to]);
 

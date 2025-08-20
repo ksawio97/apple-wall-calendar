@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
+import { useEventGroupsService } from "../../hooks/useEventGroupsService";
 import DayModel from "../../models/DayModel";
 import EventGroupsService from "../../services/EventGroupsService";
-import WeekGrid, { DayModelWithEvents, WeekDays } from "./WeekGrid";
+import WeekGrid, { DayModelWithGroupInfo, WeekDays } from "./WeekGrid";
 
-export default function WeeksGrid({ days, eventGroupService }: { days: DayModel[], eventGroupService: EventGroupsService }) {
+export default function WeeksGrid({ days }: { days: DayModel[] }) {
+    const { getEventGroupsService, addEventsChangedListener, removeEventsChangedListener } = useEventGroupsService();
     const [layer, setLayer] = useState(0);
-
+    
     // every 4 s change events shown
     useEffect(() => {
         const interval = setInterval(() => {
@@ -16,9 +18,31 @@ export default function WeeksGrid({ days, eventGroupService }: { days: DayModel[
         };
     }, [layer]);
 
-    const weeks = splitIntoSevens(
-        attachGroupInfo(days, eventGroupService, layer)
-    );
+    const [weeks, setWeeks] = useState<WeekDays[]>([]);
+    
+   // attach to data refresh 
+    useEffect(() => {
+        const { id } = addEventsChangedListener((eventGroupsService) => {
+            setWeeks(
+                splitIntoSevens(
+                    attachGroupInfo(days, eventGroupsService, layer)
+                )
+            )
+        });
+
+        return () => {
+            removeEventsChangedListener(id);
+        }
+    }, [addEventsChangedListener, removeEventsChangedListener]);
+
+    useEffect(() => {
+        const eventGroupsService = getEventGroupsService();
+        setWeeks(
+                splitIntoSevens(
+                    attachGroupInfo(days, eventGroupsService, layer)
+                )
+            )
+    }, [layer, getEventGroupsService]);
 
     return (
         <div className="w-full">
@@ -35,7 +59,7 @@ export default function WeeksGrid({ days, eventGroupService }: { days: DayModel[
     );
 }
 
-function attachGroupInfo(days: DayModel[], eventGroupService: EventGroupsService, layer: number): DayModelWithEvents[] {
+function attachGroupInfo(days: DayModel[], eventGroupService: EventGroupsService, layer: number): DayModelWithGroupInfo[] {
     return days.map(day => ({
         dayModel: day,
         groupInfo: {
@@ -44,7 +68,7 @@ function attachGroupInfo(days: DayModel[], eventGroupService: EventGroupsService
         }
     }));
 }
-function splitIntoSevens(arr: DayModelWithEvents[]) {
+function splitIntoSevens(arr: DayModelWithGroupInfo[]) {
     const result = [];
     for (let i = 0; i < arr.length; i += 7) {
         const weekDays = arr.slice(i, i + 7);

@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { DataRefreshProvider } from './hooks/useDataRefresh';
+import { EventGroupsServiceProvider } from './hooks/useEventGroupsService';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -11,7 +12,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <DataRefreshProvider>
-      <App />
+        <EventGroupsServiceProvider>
+            <App />
+        </EventGroupsServiceProvider>
     </DataRefreshProvider>
   </React.StrictMode>
 );

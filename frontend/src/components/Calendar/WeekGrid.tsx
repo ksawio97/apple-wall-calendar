@@ -3,9 +3,9 @@ import DayModel from "../../models/DayModel"
 import EventsGroupGridWrap from "../Events/EventsGroupGridWrap";
 import DayBox from "./DayBox";
 
-export type WeekDays = [DayModelWithEvents, DayModelWithEvents, DayModelWithEvents, DayModelWithEvents, DayModelWithEvents, DayModelWithEvents, DayModelWithEvents];
+export type WeekDays = [DayModelWithGroupInfo, DayModelWithGroupInfo, DayModelWithGroupInfo, DayModelWithGroupInfo, DayModelWithGroupInfo, DayModelWithGroupInfo, DayModelWithGroupInfo];
 
-export type DayModelWithEvents = {
+export type DayModelWithGroupInfo = {
     dayModel: DayModel,
     groupInfo: {
         activeGroupEvents: Set<string>;
@@ -25,7 +25,7 @@ export default function WeekGrid({ week, weeksCount, weekIndex }: WeekGridProps)
                     <DayBox  dayModel={day.dayModel}></DayBox>
                     <EventsGroupGridWrap
                         groupKey={day.toString()}
-                        dayModelWithEvents={day}
+                        dayModelWithGroupInfo={day}
                         weekIndex={weekIndex}
                     />
                 </React.Fragment>)

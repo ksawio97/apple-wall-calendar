@@ -11,10 +11,9 @@ export type GroupLayersInfo = {
 }
 
 export default class EventGroupsService {
-    groups: GroupLayersInfo[];
-    groupIndexById: Map<string, number>;
-    // TODO use it instead of saving events in DayModel
-    events: Map<string, EventModel>;
+    private groups: GroupLayersInfo[];
+    private groupIndexById: Map<string, number>;
+    private events: Map<string, EventModel>;
 
     constructor(events: EventModel[]) {
         // groups are sorted by startDate which all are unique
@@ -56,5 +55,15 @@ export default class EventGroupsService {
         const group = this.getGroupInfoById(groupId);
         if (!group) return -1;
         return layerIndex % group.eventLayers.length;
+    }
+
+    getEventByUid(uid: string) {
+        if (this.events.has(uid)) {
+            return this.events.get(uid);
+        }
+    }
+
+    getEvents() {
+        return new Map(this.events);
     }
 }

@@ -1,15 +1,11 @@
 import { useEffect, useRef, createContext, useContext } from "react";
+import EventBus from "../utils/EventBus";
 
 export const DATA_REFRESH_INTERVAL= 1000 * 30 // 30 seconds
-
-
-type DataRefresh = {
-  id: number;
-  callback: () => void;
-}
+type Callback = () => void;
 
 type DataRefreshContextType = {
-  addDataRefreshListener: (callback: () => void) => { id: number };
+  addDataRefreshListener: (callback: Callback) => { id: number };
   removeDataRefreshListener: (id: number) => void;
 }
 
@@ -19,37 +15,27 @@ const DataRefreshContext = createContext<DataRefreshContextType>({
 });
 
 export function DataRefreshProvider({ children }: { children: React.ReactNode }) {
-  const dataRefresh = useRef<Map<number, DataRefresh>>(new Map<number, DataRefresh>());
-
-  const addDataRefreshListener = (callback: () => void) => {
-    const id = dataRefresh.current.size + 1;
-    const newDataRefresh = { id, callback };
-    dataRefresh.current = new Map(dataRefresh.current).set(id, newDataRefresh)
-
-    return { id };
-  }
-
-  const removeDataRefreshListener = (id: number) => {
-
-    const newDataRefresh = new Map(dataRefresh.current);
-    newDataRefresh.delete(id);
-    dataRefresh.current = newDataRefresh;
+    const dataRefresh = useRef(new EventBus()) 
     
-  }
-
-  useEffect(() => {
-    const fireEvents = () => {
-      dataRefresh.current.forEach((data) => {
-        data.callback();
-      });
+    const addDataRefreshListener = (callback: Callback) => {
+        return dataRefresh.current.addListener(callback); 
     };
-    const id = setInterval(fireEvents, DATA_REFRESH_INTERVAL);
-    return () => clearInterval(id);
-  }, [dataRefresh]);
 
-  return (<DataRefreshContext.Provider value={{addDataRefreshListener, removeDataRefreshListener}}>{children}</DataRefreshContext.Provider>);
+    const removeDataRefreshListener = (id: number) => {
+        dataRefresh.current.removeListener(id);
+    };
+
+    useEffect(() => {
+        const fireEvents = () => {
+            dataRefresh.current.emit(undefined);
+        };
+        const id = setInterval(fireEvents, DATA_REFRESH_INTERVAL);
+        return () => clearInterval(id);
+    }, []);
+
+    return (<DataRefreshContext.Provider value={{addDataRefreshListener, removeDataRefreshListener}}>{children}</DataRefreshContext.Provider>);
 }
 
 export function useDataRefresh() {
-  return useContext(DataRefreshContext);
+    return useContext(DataRefreshContext);
 }

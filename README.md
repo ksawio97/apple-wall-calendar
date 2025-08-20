@@ -17,7 +17,6 @@ pm2 start ./apple-wall-calendar/setup/ecosystem.config.js
 
 
 ### TODO
-- refactor: remove EventModel from DayModel, access it from eventService
 - fix: cursor showing in kiosk mode
 - fix: allow geolocation issues in kiosk mode
 - photos of calendar on the wall

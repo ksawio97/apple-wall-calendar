@@ -6,7 +6,7 @@ export default function assignEventsToDays(days: DayModel[], events: EventModel[
     for (let i = 0; i < days.length; i++) {
         for (const event of events) {
             if (isEventActiveOnDay(event, days[i].day)) {
-                days[i].events.push(event);
+                days[i].events.push(event.uid);
             }
         }
     }

@@ -21,3 +21,4 @@ pm2 start ./apple-wall-calendar/setup/ecosystem.config.js
 - fix: allow geolocation issues in kiosk mode
 - photos of calendar on the wall
 - add icon for data refresh progress bar
+- investigate why BrowserMetrics pile up in raspberry pi chromium (it took 24G of space!!)

@@ -2,7 +2,7 @@
 
 echo "Installing dependencies..."
 # install dependencies
-sudo apt update && sudo apt upgrade -y
+sudo apt update -y && sudo apt upgrade -y
 sudo apt install git nodejs npm chromium-browser -y
 sudo npm install -g pm2
 

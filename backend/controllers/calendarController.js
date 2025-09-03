@@ -1,4 +1,5 @@
 const calendarService = require('../services/calendarService');
+const config = require('../config');
 
 function eventOverlap(event, from, to) {
     if (!from)
@@ -22,8 +23,7 @@ exports.getEvents = async (req, res) => {
     if (to) {
         to = Date.parse(to) + 1000 * 60 * 60 * 24;
     }
-
-    const completeText = await calendarService.getCalendarData(process.env.CALENDAR_LINK);
+    const completeText = await calendarService.getCalendarData(config.CALENDAR_LINK);
     const calendarComponent = calendarService.parseIcalData(completeText);
 
     let events = calendarService.getCalendarEvents(calendarComponent);
